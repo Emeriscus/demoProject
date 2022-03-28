@@ -12,24 +12,12 @@ public class Book implements LibraryItem {
     private int quantity;
 
     public Book(String title, List<String> authors, int yearOfPublication, int quantity) {
-        this.title = title;
-        this.authors = authors;
-        this.yearOfPublication = yearOfPublication;
-        this.quantity = quantity;
-    }
-
-    public Book(long id, String title, List<String> authors, int yearOfPublication, int quantity) {
-        this.id = id;
-        this.title = title;
-        this.authors = authors;
-        this.yearOfPublication = yearOfPublication;
-        this.quantity = quantity;
-    }
-
-    public Book(String title, List<String> authors, int yearOfPublication) {
-        this.title = title;
-        this.authors = authors;
-        this.yearOfPublication = yearOfPublication;
+        if (Validators.isValidBook(title, authors, yearOfPublication, quantity)) {
+            this.title = title;
+            this.authors = authors;
+            this.yearOfPublication = yearOfPublication;
+            this.quantity = quantity;
+        }
     }
 
     public long getId() {

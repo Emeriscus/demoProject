@@ -1,6 +1,6 @@
 package catalog;
 
-import java.util.InputMismatchException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Validators {
@@ -18,7 +18,48 @@ public class Validators {
             Integer.parseInt(input);
             return true;
         } catch (NumberFormatException nfe) {
-            throw new IllegalStateException("Not number", nfe);
+            throw new IllegalStateException("Not a number", nfe);
         }
+    }
+
+    public static boolean isValidYear(int year) {
+        return year >= 1000 && year <= LocalDate.now().getYear();
+    }
+
+    public static boolean isValidQuantity(int quantity) {
+        return quantity >= 0;
+    }
+
+    public static boolean isValidAudio
+            (String title, List<String> performers, List<String> composers, int yearOfPublication, int quantity) {
+        if (isBlank(title)) {
+            throw new IllegalArgumentException("title cannot be empty");
+        }
+        if (isEmpty(performers) || isEmpty(composers)) {
+            throw new IllegalArgumentException("performers and composers cannot be empty");
+        }
+        if (!isValidYear(yearOfPublication)) {
+            throw new IllegalArgumentException("The year must be between 1000 and the current year");
+        }
+        if (!isValidQuantity(quantity)) {
+            throw new IllegalArgumentException("The quantity must not above 0");
+        }
+        return true;
+    }
+
+    public static boolean isValidBook(String title, List<String> authors, int yearOfPublication, int quantity) {
+        if (isBlank(title)) {
+            throw new IllegalArgumentException("title cannot be empty");
+        }
+        if (isEmpty(authors)) {
+            throw new IllegalArgumentException("The authors cannot be empty");
+        }
+        if (!isValidYear(yearOfPublication)) {
+            throw new IllegalArgumentException("The year must be between 1000 and the current year");
+        }
+        if (!isValidQuantity(quantity)) {
+            throw new IllegalArgumentException("The quantity must not above 0");
+        }
+        return true;
     }
 }

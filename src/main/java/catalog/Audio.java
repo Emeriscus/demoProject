@@ -7,33 +7,19 @@ public class Audio implements LibraryItem {
 
     private long id;
     private String title;
-    private List<String> performers = new ArrayList<>();
-    private List<String> composers = new ArrayList<>();
+    private List<String> performers;
+    private List<String> composers;
     private int yearOfPublication;
     private int quantity;
 
-    public Audio(String title, List<String> performers, List<String> composers, int yearOfPublication) {
-        this.title = title;
-        this.performers = performers;
-        this.composers = composers;
-        this.yearOfPublication = yearOfPublication;
-    }
-
     public Audio(String title, List<String> performers, List<String> composers, int yearOfPublication, int quantity) {
-        this.title = title;
-        this.performers = performers;
-        this.composers = composers;
-        this.yearOfPublication = yearOfPublication;
-        this.quantity = quantity;
-    }
-
-    public Audio(long id, String title, List<String> performers, List<String> composers, int yearOfPublication, int quantity) {
-        this.id = id;
-        this.title = title;
-        this.performers = performers;
-        this.composers = composers;
-        this.yearOfPublication = yearOfPublication;
-        this.quantity = quantity;
+        if (Validators.isValidAudio(title, performers, composers, yearOfPublication, quantity)) {
+            this.title = title;
+            this.performers = performers;
+            this.composers = composers;
+            this.yearOfPublication = yearOfPublication;
+            this.quantity = quantity;
+        }
     }
 
     public long getId() {
@@ -78,5 +64,4 @@ public class Audio implements LibraryItem {
                 ", quantity=" + quantity +
                 '}';
     }
-
 }

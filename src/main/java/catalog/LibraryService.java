@@ -1,5 +1,10 @@
 package catalog;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class LibraryService {
 
     private BookRepository bookRepository;
@@ -12,48 +17,99 @@ public class LibraryService {
         this.libraryItemRepository = libraryItemRepository;
     }
 
-    public void addLibraryItem(LibraryItem libraryItem) {
-
-        long id = libraryItemRepository.saveLibraryItem(libraryItem);
+    public long addLibraryItem(LibraryItem libraryItem) {
+        long libraryItemId = libraryItemRepository.saveLibraryItem(libraryItem);
         if (libraryItem instanceof Book) {
-            bookRepository.saveBookAndGetId(id, (Book) libraryItem);
+            bookRepository.saveBookAndGetId(libraryItemId, (Book) libraryItem);
         }
         if (libraryItem instanceof Audio) {
-            audioRepository.saveAudioAndGetId(id, (Audio) libraryItem);
+            audioRepository.saveAudioAndGetId(libraryItemId, (Audio) libraryItem);
         }
+        return libraryItemId;
     }
 
     public LibraryItem getLibraryItemByTitle(String title) {
-        long libraryItemId = libraryItemRepository.getLibraryItemIdByTitle(title);
-        if (isBook(libraryItemId)) {
-            return bookRepository.getBookByLibraryItemsId(libraryItemId);
-        } else {
-            return audioRepository.getAudioByLibraryItemsId(libraryItemId);
+        if (Validators.isBlank(title)) {
+            throw new IllegalArgumentException("The title cannot be empty");
+        }
+        try {
+            long libraryItemId = libraryItemRepository.getLibraryItemIdByTitle(title);
+            if (isBook(libraryItemId)) {
+                return bookRepository.getBookByLibraryItemsId(libraryItemId);
+            } else {
+                return audioRepository.getAudioByLibraryItemsId(libraryItemId);
+            }
+        } catch (EmptyResultDataAccessException erdae) {
+            throw new IllegalStateException("No result!", erdae);
         }
     }
 
-    public LibraryItem getLibraryItemById(String title) {
-        long libraryItemId = libraryItemRepository.getLibraryItemIdByTitle(title);
-        if (isBook(libraryItemId)) {
-            return bookRepository.getBookByLibraryItemsId(libraryItemId);
-        } else {
-            return audioRepository.getAudioByLibraryItemsId(libraryItemId);
+    public LibraryItem getLibraryItemById(long libraryItemId) {
+        try {
+            if (isBook(libraryItemId)) {
+                return bookRepository.getBookByLibraryItemsId(libraryItemId);
+            } else {
+                return audioRepository.getAudioByLibraryItemsId(libraryItemId);
+            }
+        } catch (EmptyResultDataAccessException erdae) {
+            throw new IllegalStateException("No result!", erdae);
         }
+    }
+
+    public List<LibraryItem> getAllLibraryItem() {
+        List<LibraryItem> result = new ArrayList<>();
+        result.addAll(audioRepository.getAllAudioItem());
+        result.addAll(bookRepository.getAllBookItem());
+        return result;
+    }
+
+    public List<LibraryItem> getAllLibraryItemByTitleFragment(String fragment) {
+        List<LibraryItem> result = new ArrayList<>();
+        result.addAll(audioRepository.getAllAudioItemByTitleFragment(fragment));
+        result.addAll(bookRepository.getAllBookItemByTitleFragment(fragment));
+        return result;
     }
 
     public void deleteLibraryItemByTitle(String title) {
-        long libraryItemId = libraryItemRepository.getLibraryItemIdByTitle(title);
-        libraryItemRepository.deleteLibraryItemById(libraryItemId);
-        if (isBook(libraryItemId)) {
-            bookRepository.deleteBookByLibraryItemsId(libraryItemId);
-        } else {
-            audioRepository.deleteAudioByLibraryItemsId(libraryItemId);
+        if (Validators.isBlank(title)) {
+            throw new IllegalArgumentException("The title cannot be empty");
+        }
+        try {
+            long libraryItemId = libraryItemRepository.getLibraryItemIdByTitle(title);
+            if (isBook(libraryItemId)) {
+                bookRepository.deleteBookByLibraryItemsId(libraryItemId);
+            } else {
+                audioRepository.deleteAudioByLibraryItemsId(libraryItemId);
+            }
+            libraryItemRepository.deleteLibraryItemById(libraryItemId);
+        } catch (EmptyResultDataAccessException erdae) {
+            throw new IllegalStateException("No result!", erdae);
+        }
+    }
+
+    public void deleteLibraryItemById(long libraryItemId) {
+        try {
+            if (isBook(libraryItemId)) {
+                bookRepository.deleteBookByLibraryItemsId(libraryItemId);
+            } else {
+                audioRepository.deleteAudioByLibraryItemsId(libraryItemId);
+            }
+            libraryItemRepository.deleteLibraryItemById(libraryItemId);
+        } catch (EmptyResultDataAccessException erdae) {
+            throw new IllegalStateException("No result!", erdae);
         }
     }
 
     public void borrowLibraryItemByTitle(String title) {
-        long libraryItemId = libraryItemRepository.getLibraryItemIdByTitle(title);
-        libraryItemRepository.BorrowLibraryItemByTitle(libraryItemId);
+        if (Validators.isBlank(title)) {
+            throw new IllegalArgumentException("The title cannot be empty");
+        }
+        try {
+            long libraryItemId = libraryItemRepository.getLibraryItemIdByTitle(title);
+            libraryItemRepository.borrowLibraryItemByTitle(libraryItemId);
+        } catch (EmptyResultDataAccessException erdae) {
+            throw new IllegalStateException("No result!", erdae);
+        }
     }
 
     private boolean isBook(long libraryItemId) {

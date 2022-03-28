@@ -1,5 +1,6 @@
 package catalog;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -7,6 +8,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
+import java.util.Objects;
 
 public class LibraryItemRepository {
 
@@ -17,40 +20,53 @@ public class LibraryItemRepository {
     }
 
     public long saveLibraryItem(LibraryItem libraryItem) {
-        //language=sql
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(conn -> {
-                    PreparedStatement ps = conn.prepareStatement
-                            ("insert into library_items(title,item_type,available_quantity) values (?,?,?)",
-                                    Statement.RETURN_GENERATED_KEYS);
-                    ps.setString(1, libraryItem.getTitle());
-                    ps.setString(2, libraryItem.getClass().toString());
-                    ps.setInt(3, libraryItem.getQuantity());
-                    return ps;
-                }, keyHolder
-        );
-        return keyHolder.getKey().longValue();
+        try {
+            //language=sql
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(conn -> {
+                        PreparedStatement ps = conn.prepareStatement
+                                ("insert into library_items(title,item_type,available_quantity) values (?,?,?)",
+                                        Statement.RETURN_GENERATED_KEYS);
+                        ps.setString(1, libraryItem.getTitle());
+                        ps.setString(2, libraryItem.getClass().toString());
+                        ps.setInt(3, libraryItem.getQuantity());
+                        return ps;
+                    }, keyHolder
+            );
+            return Objects.requireNonNull(keyHolder.getKey()).longValue();
+        } catch (NullPointerException npe) {
+            throw new IllegalStateException("Book or Audio cannot be null!", npe);
+        }
     }
 
-    public long getLibraryItemIdByTitle(String title) {
+    public long getLibraryItemIdByTitle(String title) throws EmptyResultDataAccessException {
         //language=sql
         return jdbcTemplate.queryForObject("select id from library_items where title = ?",
                 (rs, rowNum) -> rs.getLong("id"), title);
     }
 
-    public String getLibraryItemTypeById(long id) {
+    public String getLibraryItemTypeById(long libraryItemId) {
         //language=sql
         return jdbcTemplate.queryForObject("select item_type from library_items where id = ?",
-                (rs, rowNum) -> rs.getString("item_type"), id);
+                (rs, rowNum) -> rs.getString("item_type"), libraryItemId);
     }
 
-    public void deleteLibraryItemById(long id) {
+    public void deleteLibraryItemById(long libraryItemId) {
         //language=sql
-        jdbcTemplate.update("delete from library_items where id=?", id);
+        jdbcTemplate.update("delete from library_items where id=?", libraryItemId);
     }
 
-    public void BorrowLibraryItemByTitle(long libraryItemId) {
+    public void borrowLibraryItemByTitle(long libraryItemId) {
+        if (getLibraryItemQuantity(libraryItemId) - 1 < 0) {
+            throw new IllegalStateException("There is not available item!");
+        }
         //language=sql
         jdbcTemplate.update("update library_items set available_quantity = available_quantity-1 where id = ?", libraryItemId);
+    }
+
+    private int getLibraryItemQuantity(long libraryItemId) {
+        //language=sql
+        return jdbcTemplate.queryForObject("select * from library_items where id=?",
+                (rs, rowNum) -> rs.getInt("available_quantity"), libraryItemId);
     }
 }

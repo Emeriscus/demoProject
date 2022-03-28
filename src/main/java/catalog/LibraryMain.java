@@ -4,6 +4,7 @@ import org.flywaydb.core.Flyway;
 import org.mariadb.jdbc.MariaDbDataSource;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryMain {
@@ -64,6 +65,8 @@ public class LibraryMain {
 //        System.out.println(libraryService.getLibraryItemByTitle("A tűzhegy varázslója"));
 //        System.out.println(libraryService.getLibraryItemByTitle("A kopaszkutya"));
 
+//        System.out.println(libraryService.getAllLibraryItem());
+//        System.out.println(libraryService.getAllLibraryItem().size());
 
         menu.runMenu();
     }

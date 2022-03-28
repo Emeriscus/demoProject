@@ -1,6 +1,5 @@
 package catalog;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +20,7 @@ public class Menu {
         System.out.println("3. Find library item by ID");
         System.out.println("4. Delete library item by title");
         System.out.println("5. Delete library item by ID");
-        System.out.println("6. List all library items by title");
+        System.out.println("6. List all library item");
         System.out.println("7. List all library items by title fragment");
         System.out.println("8. Borrowing a library item");
         System.out.println("9. Exit");
@@ -38,7 +37,14 @@ public class Menu {
             switch (choice) {
                 case 1:
                     System.out.println("What type of library item would you like add? (Book, Audio) ");
-                    addLibraryItem(scanner.nextLine());
+                    String input = scanner.nextLine();
+                    if (Validators.isBlank(input)) {
+                        throw new IllegalArgumentException("The type cannot be empty");
+                    }
+                    if (!input.equals("Book") && !input.equals("Audio")) {
+                        throw new IllegalArgumentException("The type must be Book or Audio");
+                    }
+                    addLibraryItem(input);
                     break;
                 case 2:
                     System.out.print("Please type the title to search for: ");
@@ -49,8 +55,14 @@ public class Menu {
                     scanner.nextLine();
                     break;
                 case 3:
-                    System.out.println("This feature is under development!");
-                    System.out.println("Please press Enter and choose another number!");
+                    System.out.print("Please type the ID to search for: ");
+                    System.out.println();
+                    input = scanner.nextLine();
+                    if (Validators.isNumber(input)) {
+                        System.out.println(libraryService.getLibraryItemById(Integer.parseInt(input)));
+                    }
+                    System.out.println();
+                    System.out.println("Continue with Enter");
                     scanner.nextLine();
                     break;
                 case 4:
@@ -63,25 +75,34 @@ public class Menu {
                     scanner.nextLine();
                     break;
                 case 5:
-                    System.out.println("This feature is under development!");
-                    System.out.println("Please press Enter and choose another number!");
+                    System.out.print("Please type the id: ");
+                    System.out.println();
+                    input = scanner.nextLine();
+                    if (Validators.isNumber(input)) {
+                        libraryService.deleteLibraryItemById(Integer.parseInt(input));
+                    }
+                    System.out.println();
+                    System.out.println("The delete was successful");
+                    System.out.println("Continue with Enter");
                     scanner.nextLine();
                     break;
                 case 6:
-                    System.out.println("This feature is under development!");
-                    System.out.println("Please press Enter and choose another number!");
+                    System.out.println();
+                    System.out.println(libraryService.getAllLibraryItem());
+                    System.out.println("Continue with Enter");
                     scanner.nextLine();
                     break;
                 case 7:
-                    System.out.println("This feature is under development!");
-                    System.out.println("Please press Enter and choose another number!");
+                    System.out.print("Please type the title: ");
+                    System.out.println();
+                    System.out.println(libraryService.getAllLibraryItemByTitleFragment(scanner.nextLine()));
+                    System.out.println("Continue with Enter");
                     scanner.nextLine();
                     break;
                 case 8:
                     System.out.println("Please type the title: ");
                     libraryService.borrowLibraryItemByTitle(scanner.nextLine());
                     System.out.println();
-                    //  System.out.println("Borrow this item? (y/n) ");
                     System.out.println("The borrow was successful");
                     System.out.println("Continue with Enter");
                     scanner.nextLine();
@@ -93,16 +114,25 @@ public class Menu {
         } while (choice != 9);
     }
 
-    private void addLibraryItem(String ItemType) {
-        if (ItemType.equals("Book")) {
+    private void addLibraryItem(String itemType) {
+        if (itemType.equals("Book")) {
             System.out.println("title ");
             String title = scanner.nextLine();
+            if (Validators.isBlank(title)) {
+                throw new IllegalArgumentException("The title cannot be empty");
+            }
             System.out.println("authors separated ', ' ");
-            List<String> authors = new ArrayList<>(StringListConverters.StringToList(scanner.nextLine()));
+            List<String> authors = new ArrayList<>(StringListConverters.stringToList(scanner.nextLine()));
             System.out.println("year ");
             int yearOfProduction = scanner.nextInt();
+            if (!Validators.isValidYear(yearOfProduction)) {
+                throw new IllegalArgumentException("The year must be between 1000 and the current year");
+            }
             System.out.println("quantity ");
             int quantity = scanner.nextInt();
+            if (!Validators.isValidQuantity(quantity)) {
+                throw new IllegalArgumentException("The quantity must not above 0");
+            }
             scanner.nextLine();
             Book book = new Book(title, authors, yearOfProduction, quantity);
             libraryService.addLibraryItem(book);
@@ -110,17 +140,23 @@ public class Menu {
             System.out.println("Continue with Enter");
             scanner.nextLine();
         }
-        if (ItemType.equals("Audio")) {
+        if (itemType.equals("Audio")) {
             System.out.println("title ");
             String title = scanner.nextLine();
             System.out.println("performers separated ', ' ");
-            List<String> performers = new ArrayList<>(StringListConverters.StringToList(scanner.nextLine()));
+            List<String> performers = new ArrayList<>(StringListConverters.stringToList(scanner.nextLine()));
             System.out.println("composers separated ', ' ");
-            List<String> composers = new ArrayList<>(StringListConverters.StringToList(scanner.nextLine()));
+            List<String> composers = new ArrayList<>(StringListConverters.stringToList(scanner.nextLine()));
             System.out.println("year ");
             int yearOfProduction = scanner.nextInt();
+            if (!Validators.isValidYear(yearOfProduction)) {
+                throw new IllegalArgumentException("The year must be between 1000 and the current year");
+            }
             System.out.println("quantity ");
             int quantity = scanner.nextInt();
+            if (!Validators.isValidQuantity(quantity)) {
+                throw new IllegalArgumentException("The quantity must not above 0");
+            }
             scanner.nextLine();
             Audio audio = new Audio(title, performers, composers, yearOfProduction, quantity);
             libraryService.addLibraryItem(audio);
@@ -129,42 +165,4 @@ public class Menu {
             scanner.nextLine();
         }
     }
-
-//    public static void clearScreen() {
-//        System.out.print("\033[H\033[2J");
-//        System.out.flush();
-//    }
-
-//    public static void clearConsole() {
-//        try {
-//            if (System.getProperty("os.name").contains("Windows")) {
-//                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-//            }
-//            else {
-//                System.out.print("\033\143");
-//            }
-//        } catch (IOException | InterruptedException ex) {
-//            throw new IllegalStateException("Error during screen clean", ex);
-//        }
-//    }
-
-//    public static void clearConsole() {
-//        try {
-//            String operatingSystem = System.getProperty("os.name"); //Check the current operating system
-//
-//            if (operatingSystem.contains("Windows")) {
-//                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
-//                Process startProcess = pb.inheritIO().start();
-//                ;
-//                startProcess.waitFor();
-//            } else {
-//                ProcessBuilder pb = new ProcessBuilder("clear");
-//                Process startProcess = pb.inheritIO().start();
-//
-//                startProcess.waitFor();
-//            }
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        }
-//    }
 }
