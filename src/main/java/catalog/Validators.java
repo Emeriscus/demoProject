@@ -22,6 +22,16 @@ public class Validators {
         }
     }
 
+    public static boolean isNumberNotThrowExpect(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+
+
     public static boolean isValidYear(int year) {
         return year >= 1000 && year <= LocalDate.now().getYear();
     }

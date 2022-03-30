@@ -26,14 +26,14 @@ class LibraryServiceTest {
 
         MariaDbDataSource dataSource = new MariaDbDataSource();
         try {
-            dataSource.setUrl("jdbc:mariadb://localhost:3306/library-catalog?useUnicode=true");
+            dataSource.setUrl("jdbc:mariadb://localhost:3306/library-catalog-test?useUnicode=true");
             dataSource.setUser("root");
             dataSource.setPassword("root");
         } catch (SQLException sqle) {
             throw new IllegalStateException("Cannot reach DataBase!", sqle);
         }
 
-        flyway = Flyway.configure().dataSource(dataSource).load();
+        flyway = Flyway.configure()/*.locations("src/test/resources/db/migration")*/.dataSource(dataSource).load();
         flyway.clean();
         flyway.migrate();
 

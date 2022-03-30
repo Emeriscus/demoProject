@@ -36,20 +36,6 @@ public class BookRepository {
         );
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
-//
-//    public String getTitleById(long id) {
-//        //language=sql
-//        return jdbcTemplate.queryForObject("select title from books where id=?",
-//                (rs, rowNum) -> rs.getString("title"), id);
-//    }
-//
-//    public Book getBookById(long id) {
-//        //language=sql
-//        return jdbcTemplate.queryForObject("select * from books where id = ?",
-//                (rs, rowNum) -> new Book
-//                        (rs.getString("title"), StringListConverters.stringToList(rs.getString("authors")),
-//                                rs.getInt("year_of_publication")), id);
-//    }
 
     public Book getBookByLibraryItemsId(long libraryItemId) {
         //language=sql
