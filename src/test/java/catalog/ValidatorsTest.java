@@ -34,14 +34,8 @@ public class ValidatorsTest {
 
         assertTrue(isNumber("0"));
         assertTrue(isNumber("34"));
-
-        IllegalStateException expected = assertThrows(IllegalStateException.class, () ->
-                isNumber(""));
-        assertEquals("Not a number", expected.getMessage());
-
-        expected = assertThrows(IllegalStateException.class, () ->
-                isNumber("hgk"));
-        assertEquals("Not a number", expected.getMessage());
+        assertFalse(isNumber(""));
+        assertFalse(isNumber("dsfgsd"));
     }
 
     @Test

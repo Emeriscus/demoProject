@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Menu {
 
     private Scanner scanner = new Scanner(System.in);
-    private int choice;
+    private int choice = 0;
     private LibraryService libraryService;
 
     public Menu(LibraryService libraryService) {
@@ -61,7 +61,7 @@ public class Menu {
         System.out.println("9. Exit");
         System.out.print("Please choose a number and press Enter: ");
         String input = scanner.nextLine();
-        if (Validators.isNumberNotThrowExpect(input)) {
+        if (Validators.isNumber(input)) {
             choice = Integer.parseInt(input);
         } else {
             System.out.println("Not a number! Please press Enter and choose a number!");
@@ -73,10 +73,13 @@ public class Menu {
         System.out.println("What type of library item would you like add? (Book, Audio) ");
         String input = scanner.nextLine();
         if (Validators.isBlank(input)) {
-            throw new IllegalArgumentException("The type cannot be empty");
+            System.out.println("The type cannot be empty! Please press Enter and try again!");
+            scanner.nextLine();
+            return;
         }
         if (!input.equals("Book") && !input.equals("Audio")) {
-            throw new IllegalArgumentException("The type must be Book or Audio");
+            System.out.println("The type must be Book or Audio! Please press Enter and try again!");
+            scanner.nextLine();
         }
         addLibraryItem(input);
     }
@@ -84,7 +87,11 @@ public class Menu {
     private void runMenuItemTwo() {
         System.out.print("Please type the title to search for: ");
         System.out.println();
-        System.out.println(libraryService.getLibraryItemByTitle(scanner.nextLine()));
+        String input = scanner.nextLine();
+        if (libraryService.getLibraryItemByTitle(input).isPresent()) {
+            System.out.println(libraryService.getLibraryItemByTitle(input).get());
+        }
+        choice = 0;
         System.out.println();
         System.out.println("Continue with Enter");
         scanner.nextLine();
@@ -94,9 +101,13 @@ public class Menu {
         System.out.print("Please type the ID to search for: ");
         System.out.println();
         String input = scanner.nextLine();
-        if (Validators.isNumber(input)) {
-            System.out.println(libraryService.getLibraryItemById(Integer.parseInt(input)));
+        if (!Validators.isNumber(input)) {
+            System.out.println("Not a number! Please press Enter and choose a number!");
         }
+        if (Validators.isNumber(input) && libraryService.getLibraryItemById(Integer.parseInt(input)).isPresent()) {
+            System.out.println(libraryService.getLibraryItemById(Integer.parseInt(input)).get());
+        }
+        choice = 0;
         System.out.println();
         System.out.println("Continue with Enter");
         scanner.nextLine();
@@ -105,29 +116,41 @@ public class Menu {
     private void runMenuItemFour() {
         System.out.print("Please type the title: ");
         System.out.println();
-        libraryService.deleteLibraryItemByTitle(scanner.nextLine());
-        System.out.println();
-        System.out.println("The delete was successful");
+        String input = scanner.nextLine();
+        if (libraryService.getLibraryItemByTitle(input).isPresent()) {
+            libraryService.deleteLibraryItemByTitle(input);
+            System.out.println();
+            System.out.println("The delete was successful");
+        }
+        choice = 0;
         System.out.println("Continue with Enter");
         scanner.nextLine();
     }
 
     private void runMenuItemFive() {
-        System.out.print("Please type the id: ");
+        System.out.print("Please type the ID: ");
         System.out.println();
         String input = scanner.nextLine();
-        if (Validators.isNumber(input)) {
-            libraryService.deleteLibraryItemById(Integer.parseInt(input));
+        if (!Validators.isNumber(input)) {
+            System.out.println("Not a number! Please press Enter and try again!");
         }
-        System.out.println();
-        System.out.println("The delete was successful");
-        System.out.println("Continue with Enter");
-        scanner.nextLine();
+        if (Validators.isNumber(input) && libraryService.getLibraryItemById(Integer.parseInt(input)).isPresent()) {
+            libraryService.deleteLibraryItemById(Integer.parseInt(input));
+            System.out.println("The delete was successful");
+            System.out.println("Continue with Enter");
+            scanner.nextLine();
+        } else {
+            choice = 0;
+            System.out.println();
+            System.out.println("Continue with Enter");
+            scanner.nextLine();
+        }
     }
 
     private void runMenuItemSix() {
         System.out.println();
         System.out.println(libraryService.getAllLibraryItem());
+        choice = 0;
         System.out.println("Continue with Enter");
         scanner.nextLine();
     }
@@ -136,17 +159,27 @@ public class Menu {
         System.out.print("Please type the title: ");
         System.out.println();
         System.out.println(libraryService.getAllLibraryItemByTitleFragment(scanner.nextLine()));
+        choice = 0;
         System.out.println("Continue with Enter");
         scanner.nextLine();
     }
 
     private void runMenuItemEight() {
         System.out.println("Please type the title: ");
-        libraryService.borrowLibraryItemByTitle(scanner.nextLine());
-        System.out.println();
-        System.out.println("The borrow was successful");
-        System.out.println("Continue with Enter");
-        scanner.nextLine();
+        String input = scanner.nextLine();
+        if (libraryService.getLibraryItemByTitle(input).isPresent() &&
+                libraryService.hasAvailableLibraryItemQuantitybyId(libraryService.getLibraryItemIdByTitle(input))) {
+            libraryService.borrowLibraryItemByTitle(input);
+            System.out.println();
+            System.out.println("The borrow was successful");
+            System.out.println("Continue with Enter");
+            scanner.nextLine();
+        } else {
+            choice = 0;
+            System.out.println(("There is not available item!"));
+            System.out.println("Continue with Enter");
+            scanner.nextLine();
+        }
     }
 
     private void addLibraryItem(String itemType) {

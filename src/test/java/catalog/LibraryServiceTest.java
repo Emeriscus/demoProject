@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mariadb.jdbc.MariaDbDataSource;
 
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,7 +57,7 @@ class LibraryServiceTest {
         audio = new Audio("Viperagarzon", List.of("Másfél"), List.of("Bácsi Attila", "Hegedűs János"), 1996, 1);
 
         long libraryItemId = libraryService.addLibraryItem(audio);
-        Audio expected = (Audio) libraryService.getLibraryItemById(libraryItemId);
+        Audio expected = (Audio) libraryService.getLibraryItemById(libraryItemId).get();
 
         assertEquals("Viperagarzon", expected.getTitle());
         assertEquals(List.of("Másfél"), expected.getPerformers());
@@ -73,7 +72,7 @@ class LibraryServiceTest {
         book = new Book("A tűzhegy varázslója", List.of("Steve Jackson", "Ian Livingstone"), 1982, 6);
 
         long libraryItemId = libraryService.addLibraryItem(book);
-        Book expected = (Book) libraryService.getLibraryItemById(libraryItemId);
+        Book expected = (Book) libraryService.getLibraryItemById(libraryItemId).get();
 
         assertEquals("A tűzhegy varázslója", expected.getTitle());
         assertEquals(List.of("Steve Jackson", "Ian Livingstone"), expected.getContributors());
@@ -92,10 +91,10 @@ class LibraryServiceTest {
 
     @Test
     void getLibraryItemByTitleTest() {
-        assertEquals("Conan a barbár", libraryService.getLibraryItemByTitle("Conan a barbár").getTitle());
-        assertEquals(List.of("Robert E. Howard"), libraryService.getLibraryItemByTitle("Conan a barbár").getContributors());
-        assertEquals(1932, libraryService.getLibraryItemByTitle("Conan a barbár").getYearOfPublication());
-        assertEquals(3, libraryService.getLibraryItemByTitle("Conan a barbár").getQuantity());
+        assertEquals("Conan a barbár", libraryService.getLibraryItemByTitle("Conan a barbár").get().getTitle());
+        assertEquals(List.of("Robert E. Howard"), libraryService.getLibraryItemByTitle("Conan a barbár").get().getContributors());
+        assertEquals(1932, libraryService.getLibraryItemByTitle("Conan a barbár").get().getYearOfPublication());
+        assertEquals(3, libraryService.getLibraryItemByTitle("Conan a barbár").get().getQuantity());
     }
 
     @Test
@@ -105,9 +104,9 @@ class LibraryServiceTest {
         long id = libraryService.addLibraryItem(
                 (new Audio("Illegális bál", List.of("Aurora"), List.of("Vigi, Pusztai Zoltán"), 1997, 4)));
 
-        assertEquals("Illegális bál", libraryService.getLibraryItemById(id).getTitle());
-        assertEquals(1997, libraryService.getLibraryItemById(id).getYearOfPublication());
-        assertEquals(4, libraryService.getLibraryItemById(id).getQuantity());
+        assertEquals("Illegális bál", libraryService.getLibraryItemById(id).get().getTitle());
+        assertEquals(1997, libraryService.getLibraryItemById(id).get().getYearOfPublication());
+        assertEquals(4, libraryService.getLibraryItemById(id).get().getQuantity());
     }
 
     @Test
@@ -141,20 +140,15 @@ class LibraryServiceTest {
 
     @Test
     void borrowLibraryItemByTitleTest() {
-        assertEquals(3, libraryService.getLibraryItemByTitle("Conan a barbár").getQuantity());
+        assertEquals(3, libraryService.getLibraryItemByTitle("Conan a barbár").get().getQuantity());
         libraryService.borrowLibraryItemByTitle("Conan a barbár");
-        assertEquals(2, libraryService.getLibraryItemByTitle("Conan a barbár").getQuantity());
+        assertEquals(2, libraryService.getLibraryItemByTitle("Conan a barbár").get().getQuantity());
     }
 
     @Test
     void borrowLibraryItemByTitleNotAvailableItemTest() {
-        assertEquals(1, libraryService.getLibraryItemByTitle("Viperagarzon").getQuantity());
+        assertEquals(1, libraryService.getLibraryItemByTitle("Viperagarzon").get().getQuantity());
         libraryService.borrowLibraryItemByTitle("Viperagarzon");
-        assertEquals(0, libraryService.getLibraryItemByTitle("Viperagarzon").getQuantity());
-
-        IllegalStateException expected = assertThrows(IllegalStateException.class, () ->
-                libraryService.borrowLibraryItemByTitle("Viperagarzon"));
-
-        assertEquals("There is not available item!", expected.getMessage());
+        assertEquals(0, libraryService.getLibraryItemByTitle("Viperagarzon").get().getQuantity());
     }
 }

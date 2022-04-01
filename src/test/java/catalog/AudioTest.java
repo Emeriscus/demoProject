@@ -2,7 +2,6 @@ package catalog;
 
 import org.junit.jupiter.api.Test;
 
-import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.List;
 

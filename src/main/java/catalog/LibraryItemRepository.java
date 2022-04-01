@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Objects;
+import java.util.Optional;
 
 public class LibraryItemRepository {
 
@@ -55,17 +56,15 @@ public class LibraryItemRepository {
         jdbcTemplate.update("delete from library_items where id=?", libraryItemId);
     }
 
-    public void borrowLibraryItemByTitle(long libraryItemId) {
-        if (getLibraryItemQuantity(libraryItemId) - 1 < 0) {
-            throw new IllegalStateException("There is not available item!");
-        }
+    public void borrowLibraryItemById(long libraryItemId) {
         //language=sql
-        jdbcTemplate.update("update library_items set available_quantity = available_quantity-1 where id = ?", libraryItemId);
+        jdbcTemplate.update
+                ("update library_items set available_quantity = available_quantity-1 where id = ?", libraryItemId);
     }
 
-    private int getLibraryItemQuantity(long libraryItemId) {
+    public boolean hasAvailableLibraryItemQuantitybyId(long libraryItemId) {
         //language=sql
         return jdbcTemplate.queryForObject("select * from library_items where id=?",
-                (rs, rowNum) -> rs.getInt("available_quantity"), libraryItemId);
+                (rs, rowNum) -> rs.getInt("available_quantity"), libraryItemId) > 0;
     }
 }
