@@ -1,10 +1,12 @@
 package catalog;
 
+import catalog.repository.AudioRepository;
+import catalog.repository.BookRepository;
+import catalog.repository.LibraryItemRepository;
 import org.flywaydb.core.Flyway;
 import org.mariadb.jdbc.MariaDbDataSource;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class LibraryMain {
 

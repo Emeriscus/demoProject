@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 
-import static catalog.Validators.*;
+import static catalog.utils.Validators.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 

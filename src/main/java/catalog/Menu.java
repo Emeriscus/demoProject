@@ -1,5 +1,10 @@
 package catalog;
 
+import catalog.classes.Audio;
+import catalog.classes.Book;
+import catalog.utils.StringListConverters;
+import catalog.utils.Validators;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

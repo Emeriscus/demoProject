@@ -1,4 +1,4 @@
-package catalog;
+package catalog.classes;
 
 import java.util.List;
 

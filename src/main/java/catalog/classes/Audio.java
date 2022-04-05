@@ -1,4 +1,6 @@
-package catalog;
+package catalog.classes;
+
+import catalog.utils.Validators;
 
 import java.util.ArrayList;
 import java.util.List;

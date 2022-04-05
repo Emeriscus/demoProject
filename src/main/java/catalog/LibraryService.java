@@ -1,5 +1,12 @@
 package catalog;
 
+import catalog.classes.Audio;
+import catalog.classes.Book;
+import catalog.classes.LibraryItem;
+import catalog.repository.AudioRepository;
+import catalog.repository.BookRepository;
+import catalog.repository.LibraryItemRepository;
+import catalog.utils.Validators;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;

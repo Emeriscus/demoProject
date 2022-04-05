@@ -1,5 +1,6 @@
 package catalog;
 
+import catalog.classes.Book;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

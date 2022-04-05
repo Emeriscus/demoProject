@@ -1,4 +1,4 @@
-package catalog;
+package catalog.utils;
 
 import java.time.LocalDate;
 import java.util.List;

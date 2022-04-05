@@ -1,5 +1,6 @@
-package catalog;
+package catalog.repository;
 
+import catalog.classes.LibraryItem;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -9,7 +10,6 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Objects;
-import java.util.Optional;
 
 public class LibraryItemRepository {
 

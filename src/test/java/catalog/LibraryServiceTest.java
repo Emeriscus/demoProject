@@ -1,5 +1,11 @@
 package catalog;
 
+import catalog.classes.Audio;
+import catalog.classes.Book;
+import catalog.classes.LibraryItem;
+import catalog.repository.AudioRepository;
+import catalog.repository.BookRepository;
+import catalog.repository.LibraryItemRepository;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

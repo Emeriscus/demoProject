@@ -1,5 +1,7 @@
-package catalog;
+package catalog.repository;
 
+import catalog.classes.Book;
+import catalog.utils.StringListConverters;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
