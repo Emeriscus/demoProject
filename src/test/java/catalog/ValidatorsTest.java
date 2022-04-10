@@ -52,4 +52,23 @@ public class ValidatorsTest {
         assertTrue(isValidQuantity(0));
         assertFalse(isValidQuantity(-1));
     }
+
+    @Test
+    public void isValidEmailTestWithValidEmailTest() {
+        assertTrue(isValidEmail("emeriscus@domain.co.in"));
+        assertTrue(isValidEmail("emeriscus@domain.com"));
+        assertTrue(isValidEmail("emeriscus.name@domain.com"));
+    }
+
+    @Test
+    public void isValidEmailTestWithInvalidEmailTest() {
+        assertFalse(isValidEmail(".emeriscus@google.com"));
+        assertFalse(isValidEmail("emeriscus@google.com."));
+        assertFalse(isValidEmail("emeriscus@google..com"));
+        assertFalse(isValidEmail("emeriscus@google.c"));
+        assertFalse(isValidEmail("emeriscus@google.corporate"));
+        assertFalse(isValidEmail("emer'iscus@domain.com"));
+        assertFalse(isValidEmail(" emeriscus@domain.com"));
+        assertFalse(isValidEmail("emeriscus @domain.com"));
+    }
 }

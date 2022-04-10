@@ -1,7 +1,8 @@
-package catalog;
+package catalog.controller;
 
 import catalog.classes.Audio;
 import catalog.classes.Book;
+import catalog.service.LibraryService;
 import catalog.utils.StringListConverters;
 import catalog.utils.Validators;
 

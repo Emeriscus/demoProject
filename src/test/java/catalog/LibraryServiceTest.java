@@ -3,6 +3,7 @@ package catalog;
 import catalog.classes.Audio;
 import catalog.classes.Book;
 import catalog.classes.LibraryItem;
+import catalog.service.LibraryService;
 import catalog.repository.AudioRepository;
 import catalog.repository.BookRepository;
 import catalog.repository.LibraryItemRepository;
@@ -156,5 +157,12 @@ class LibraryServiceTest {
         assertEquals(1, libraryService.getLibraryItemByTitle("Viperagarzon").get().getQuantity());
         libraryService.borrowLibraryItemByTitle("Viperagarzon");
         assertEquals(0, libraryService.getLibraryItemByTitle("Viperagarzon").get().getQuantity());
+    }
+
+    @Test
+    void hasAvailableLibraryItemQuantitybyIdTest() {
+        assertTrue(libraryService.hasAvailableLibraryItemQuantitybyId(4));
+        libraryService.borrowLibraryItemByTitle("Viperagarzon");
+        assertFalse(libraryService.hasAvailableLibraryItemQuantitybyId(4));
     }
 }
