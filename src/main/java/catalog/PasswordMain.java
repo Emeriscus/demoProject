@@ -9,7 +9,7 @@ public class PasswordMain {
 
     public static void main(String[] args) {
 
-        String myPassword = "myPassword123";
+        String myPassword = "kaka";
 
         // Generate Salt. The generated value can be stored in DB.
         String salt = PasswordUtils.getSalt();

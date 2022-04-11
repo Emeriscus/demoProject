@@ -62,13 +62,12 @@ public class LibraryMain {
 
         UserService userService = new UserService(new UserRepository(dataSource));
 
-        userService.addUser(new Admin("emeriscus@gmail.com", "ghksdgfhjdsgsdsd", "fdgfsgfdsgfdsg"));
+        userService.addUser(new Admin("emeriscus@gmail.com", "wP.X-L[[c&D<×I/2-Đ?VCnTZ(P,{kg", "LrSGYAfmDGBQsAZkwD3BXz1TEalUeU2155ODJt3YJ4A="));
         userService.addUser(new User("rsgf@sdg.com", "sdgsfgvsdgsdgsdgrghzmhwe4t242", "32534t4wt5fdg8v94zt9tw4"));
 
-        UserMenu userMenu = new UserMenu(userService);
+        UserMenu userMenu = new UserMenu(userService, libraryService);
         Menu menu = new Menu(libraryService);
 
-//        userMenu.runUserMenu();
-        menu.runMenu();
+        userMenu.runUserMenu();
     }
 }

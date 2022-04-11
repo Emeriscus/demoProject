@@ -56,6 +56,9 @@ public class Menu {
     }
 
     public void printMenu() {
+        System.out.println();
+        System.out.println("--------------Welcome to the Library Catalog Projekt Menu--------------");
+        System.out.println();
         System.out.println("1. Add library item");
         System.out.println("2. Find library item by title");
         System.out.println("3. Find library item by ID");

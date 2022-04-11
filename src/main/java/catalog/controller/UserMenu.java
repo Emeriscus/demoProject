@@ -5,18 +5,19 @@ import catalog.service.LibraryService;
 import catalog.service.UserService;
 import catalog.utils.PasswordUtils;
 import catalog.utils.Validators;
-import org.springframework.core.SpringVersion;
 
 import java.util.Scanner;
 
 public class UserMenu {
 
+    private Menu menu;
     private Scanner scanner = new Scanner(System.in);
     private int choice = 0;
     private UserService userService;
 
-    public UserMenu(UserService userService) {
+    public UserMenu(UserService userService, LibraryService libraryService) {
         this.userService = userService;
+        this.menu = new Menu(libraryService);
     }
 
     public void runUserMenu() {
@@ -37,6 +38,7 @@ public class UserMenu {
     }
 
     public void printUserMenu() {
+        System.out.println();
         System.out.println("----------------Welcome to the Library Catalog Projekt----------------");
         System.out.println();
         System.out.println("Please login or register!");
@@ -54,16 +56,21 @@ public class UserMenu {
         }
     }
 
-
     private void login() {
         System.out.println();
-        boolean isValidEmail = false;
-        String email = null;
-        while (!isValidEmail) {
-            System.out.println("Please type the email and press Enter");
-            email = scanner.nextLine();
-            isValidEmail = userService.isExistingUser(email);
+        System.out.println("Please type the email and press Enter");
+        String email = scanner.nextLine();
+        if (userService.isExistingUser(email)) {
+            isValidPassword(email);
+            menu.runMenu();
+            return;
         }
+        choice = 0;
+        System.out.println("Press Enter and choose another e-mail!");
+        scanner.nextLine();
+    }
+
+    private boolean isValidPassword(String email) {
         boolean isValidPassword = false;
         int count = 0;
         while (!isValidPassword && count < 3) {
@@ -74,24 +81,31 @@ public class UserMenu {
             isValidPassword = PasswordUtils.verifyUserPassword(password, storedPassword, salt);
             count++;
         }
+        return isValidPassword;
     }
 
     private void register() {
         System.out.println();
         System.out.println("Please type the e-mail and press Enter: ");
         String email = scanner.nextLine();
-        if (userService.isEmailTaken(email)) {
-            System.out.println("Press Enter and choose another e-mail!");
-            scanner.nextLine();
+        if (Validators.isValidEmail(email)) {
+            if (userService.isEmailTaken(email)) {
+                System.out.println("Press Enter and choose another e-mail!");
+                scanner.nextLine();
+            } else {
+                System.out.println("Please type the password and press Enter: ");
+                String password = scanner.nextLine();
+                String salt = PasswordUtils.getSalt();
+                String securePassword = PasswordUtils.generateSecurePassword(password, salt);
+                userService.addUser(new Admin(email, salt, securePassword));
+                System.out.println("The registration was successfull! Please press Enter!");
+                scanner.nextLine();
+            }
         } else {
-            System.out.println("Please type the password and press Enter: ");
-            String password = scanner.nextLine();
-            String salt = PasswordUtils.getSalt();
-            String securePassword = PasswordUtils.generateSecurePassword(password, salt);
-            userService.addUser(new Admin(email, salt, securePassword));
-            System.out.println("The registration was successfull! Please press Enter!");
+            System.out.println("Not valid email address. Please Press Enter!");
             scanner.nextLine();
         }
+        choice = 0;
     }
 }
 
