@@ -1,8 +1,11 @@
 package catalog.controller;
 
+import catalog.classes.Admin;
 import catalog.service.LibraryService;
 import catalog.service.UserService;
+import catalog.utils.PasswordUtils;
 import catalog.utils.Validators;
+import org.springframework.core.SpringVersion;
 
 import java.util.Scanner;
 
@@ -11,6 +14,10 @@ public class UserMenu {
     private Scanner scanner = new Scanner(System.in);
     private int choice = 0;
     private UserService userService;
+
+    public UserMenu(UserService userService) {
+        this.userService = userService;
+    }
 
     public void runUserMenu() {
         do {
@@ -51,18 +58,40 @@ public class UserMenu {
     private void login() {
         System.out.println();
         boolean isValidEmail = false;
-        while (isValidEmail) {
-            System.out.println("Please type the username and press Enter");
-            String name = scanner.nextLine();
-            isValidEmail = userService.isExistingUser(name);
+        String email = null;
+        while (!isValidEmail) {
+            System.out.println("Please type the email and press Enter");
+            email = scanner.nextLine();
+            isValidEmail = userService.isExistingUser(email);
         }
-
-
+        boolean isValidPassword = false;
+        int count = 0;
+        while (!isValidPassword && count < 3) {
+            System.out.println("Please type the password and press Enter");
+            String password = scanner.nextLine();
+            String storedPassword = userService.getStoredPasswordByEmail(email);
+            String salt = userService.getStoredSaltByEmail(email);
+            isValidPassword = PasswordUtils.verifyUserPassword(password, storedPassword, salt);
+            count++;
+        }
     }
 
     private void register() {
+        System.out.println();
+        System.out.println("Please type the e-mail and press Enter: ");
+        String email = scanner.nextLine();
+        if (userService.isEmailTaken(email)) {
+            System.out.println("Press Enter and choose another e-mail!");
+            scanner.nextLine();
+        } else {
+            System.out.println("Please type the password and press Enter: ");
+            String password = scanner.nextLine();
+            String salt = PasswordUtils.getSalt();
+            String securePassword = PasswordUtils.generateSecurePassword(password, salt);
+            userService.addUser(new Admin(email, salt, securePassword));
+            System.out.println("The registration was successfull! Please press Enter!");
+            scanner.nextLine();
+        }
     }
-
-
 }
 

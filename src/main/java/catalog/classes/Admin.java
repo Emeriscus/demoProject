@@ -1,8 +1,13 @@
 package catalog.classes;
 
 public class Admin extends User {
-    public Admin(String username, String email, String password) {
-        super(username, email, password);
+
+    public Admin(String email, String salt, String securePassword) {
+        super(email, salt, securePassword);
+    }
+
+    public Admin(String email) {
+        super(email);
     }
 
     @Override

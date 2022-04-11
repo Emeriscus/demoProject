@@ -5,6 +5,7 @@ import catalog.classes.Audio;
 import catalog.classes.Book;
 import catalog.classes.User;
 import catalog.controller.Menu;
+import catalog.controller.UserMenu;
 import catalog.repository.UserRepository;
 import catalog.service.LibraryService;
 import catalog.repository.AudioRepository;
@@ -61,12 +62,13 @@ public class LibraryMain {
 
         UserService userService = new UserService(new UserRepository(dataSource));
 
-        userService.addUser(new Admin("emeriscus", "emeriscus@gmail.com", "eta"));
-        userService.addUser(new User("dsfg", "rsgf@sdg.com", "tekintetes úr"));
+        userService.addUser(new Admin("emeriscus@gmail.com", "ghksdgfhjdsgsdsd", "fdgfsgfdsgfdsg"));
+        userService.addUser(new User("rsgf@sdg.com", "sdgsfgvsdgsdgsdgrghzmhwe4t242", "32534t4wt5fdg8v94zt9tw4"));
 
-
+        UserMenu userMenu = new UserMenu(userService);
         Menu menu = new Menu(libraryService);
 
+//        userMenu.runUserMenu();
         menu.runMenu();
     }
 }

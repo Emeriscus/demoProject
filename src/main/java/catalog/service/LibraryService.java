@@ -85,6 +85,7 @@ public class LibraryService {
         return result;
     }
 
+    //    @Transactional
     public boolean deleteLibraryItemByTitle(String title) {
         if (Validators.isBlank(title)) {
             System.out.println("The title cannot be empty! ! Please press Enter and try again!");

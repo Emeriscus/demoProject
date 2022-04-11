@@ -4,32 +4,36 @@ import catalog.utils.Validators;
 
 public class User {
 
-    private String username;
     private String email;
-    private String password;
+    private String salt;
+    private String securePassword;
     private boolean adminRights;
 
-    public User(String username, String email, String password) {
-        this.username = username;
+    public User(String email, String salt, String securePassword) {
         this.email = email;
-        if (Validators.isValidEmail(email)) {
-            this.password = Integer.toString(password.hashCode());
-        }
+        this.salt = salt;
+        this.securePassword = securePassword;
+        this.adminRights = false;
     }
 
-    public String getUsername() {
-        return username;
+    public User(String email) {
+        this.email = email;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getSalt() {
+        return salt;
+    }
+
+    public String getSecurePassword() {
+        return securePassword;
     }
 
     public boolean isAdminRights() {
-        return false;
+        return adminRights;
     }
+
 }

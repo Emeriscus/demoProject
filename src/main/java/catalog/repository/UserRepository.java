@@ -14,14 +14,26 @@ public class UserRepository {
     }
 
     public void addUser(User user) {
-        jdbcTemplate.update("insert into users(username, email, password, admin_rights) values (?,?,?,?)",
-                user.getUsername(), user.getEmail(), user.getPassword(), user.isAdminRights());
+        //language=sql
+        jdbcTemplate.update("insert into users(email, salt, secure_password, admin_rights) values (?,?,?,?)",
+                user.getEmail(), user.getSalt(), user.getSecurePassword(), user.isAdminRights());
     }
 
-    public boolean isExistingUser(String username) {
+    public String getStoredPasswordByEmail(String email) {
         //language=sql
-        jdbcTemplate.queryForObject("select * from users where users.username = ?",
-                (rs, rowNum) -> rs.getString("username"), username);
-        return true;
+        return jdbcTemplate.queryForObject("select * from users where email=?",
+                (rs, rowNum) -> rs.getString("secure_password"), email);
+    }
+
+    public String getStoredSaltByEmail(String email) {
+        //language=sql
+        return jdbcTemplate.queryForObject("select * from users where email=?",
+                (rs, rowNum) -> rs.getString("salt"), email);
+    }
+
+    public void queryByEmail(String email) {
+        //language=sql
+        jdbcTemplate.queryForObject("select * from users where users.email = ?",
+                (rs, rowNum) -> rs.getString("email"), email);
     }
 }
