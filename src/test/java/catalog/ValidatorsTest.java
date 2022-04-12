@@ -71,4 +71,23 @@ public class ValidatorsTest {
         assertFalse(isValidEmail(" emeriscus@domain.com"));
         assertFalse(isValidEmail("emeriscus @domain.com"));
     }
+
+    @Test
+    void isValidPasswordWithValidPasswordTest() {
+        assertTrue(isValidPassword("sdDee@g9"));
+    }
+
+    @Test
+    void isValidPasswordWithInvalidPasswordTest() {
+        assertFalse(isValidPassword(null));
+        assertFalse(isValidPassword("sdDe.g9"));
+        assertFalse(isValidPassword("assdsfdfgfgd"));
+        assertFalse(isValidPassword("asf9dgdsgsdg"));
+        assertFalse(isValidPassword("sdg9Dthrthhh"));
+        assertFalse(isValidPassword("DDDDDDDDDDDD"));
+        assertFalse(isValidPassword("DDDD9ZEETRTT"));
+        assertFalse(isValidPassword("ERETT9.FFFGH"));
+        assertFalse(isValidPassword(".?.?.?.?.?.?."));
+        assertFalse(isValidPassword(""));
+    }
 }

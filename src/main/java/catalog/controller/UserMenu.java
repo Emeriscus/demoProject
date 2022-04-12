@@ -3,7 +3,7 @@ package catalog.controller;
 import catalog.classes.Admin;
 import catalog.service.LibraryService;
 import catalog.service.UserService;
-import catalog.utils.PasswordUtils;
+import catalog.utils.PasswordGenerator;
 import catalog.utils.Validators;
 
 import java.util.Scanner;
@@ -60,8 +60,7 @@ public class UserMenu {
         System.out.println();
         System.out.println("Please type the email and press Enter");
         String email = scanner.nextLine();
-        if (userService.isExistingUser(email)) {
-            isValidPassword(email);
+        if (userService.isExistingUser(email) && isCorrectPassword(email)) {
             menu.runMenu();
             return;
         }
@@ -70,7 +69,7 @@ public class UserMenu {
         scanner.nextLine();
     }
 
-    private boolean isValidPassword(String email) {
+    private boolean isCorrectPassword(String email) {
         boolean isValidPassword = false;
         int count = 0;
         while (!isValidPassword && count < 3) {
@@ -78,7 +77,7 @@ public class UserMenu {
             String password = scanner.nextLine();
             String storedPassword = userService.getStoredPasswordByEmail(email);
             String salt = userService.getStoredSaltByEmail(email);
-            isValidPassword = PasswordUtils.verifyUserPassword(password, storedPassword, salt);
+            isValidPassword = PasswordGenerator.verifyUserPassword(password, storedPassword, salt);
             count++;
         }
         return isValidPassword;
@@ -89,23 +88,40 @@ public class UserMenu {
         System.out.println("Please type the e-mail and press Enter: ");
         String email = scanner.nextLine();
         if (Validators.isValidEmail(email)) {
-            if (userService.isEmailTaken(email)) {
-                System.out.println("Press Enter and choose another e-mail!");
-                scanner.nextLine();
-            } else {
-                System.out.println("Please type the password and press Enter: ");
-                String password = scanner.nextLine();
-                String salt = PasswordUtils.getSalt();
-                String securePassword = PasswordUtils.generateSecurePassword(password, salt);
-                userService.addUser(new Admin(email, salt, securePassword));
-                System.out.println("The registration was successfull! Please press Enter!");
-                scanner.nextLine();
-            }
+            checkEmailAndPassword(email);
         } else {
             System.out.println("Not valid email address. Please Press Enter!");
             scanner.nextLine();
         }
         choice = 0;
+    }
+
+    private void checkEmailAndPassword(String email) {
+        if (userService.isEmailTaken(email)) {
+            System.out.println("Press Enter and choose another e-mail!");
+            scanner.nextLine();
+        } else {
+            System.out.println("Please type the password and press Enter: ");
+            String password = scanner.nextLine();
+            boolean isValidPassword = Validators.isValidPassword(password);
+            while (!isValidPassword) {
+                System.out.println("The password must contains at least 8 and at most 20 characters!");
+                System.out.println("The password must contains at least one digit," +
+                        " one upper case alphabet, one lower case alphabet and one special character!");
+                System.out.println("Please type again the password and press Enter: ");
+                password = scanner.nextLine();
+                isValidPassword = Validators.isValidPassword(password);
+            }
+            saveEmailAndPassword(email, password);
+        }
+    }
+
+    private void saveEmailAndPassword(String email, String password) {
+        String salt = PasswordGenerator.getSalt();
+        String securePassword = PasswordGenerator.generateSecurePassword(password, salt);
+        userService.addUser(new Admin(email, salt, securePassword));
+        System.out.println("The registration was successfull! Please press Enter!");
+        scanner.nextLine();
     }
 }
 

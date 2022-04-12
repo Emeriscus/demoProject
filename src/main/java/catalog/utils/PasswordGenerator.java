@@ -8,7 +8,7 @@ import java.util.Random;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-public class PasswordUtils {
+public class PasswordGenerator {
 
     private static final Random RANDOM = new SecureRandom();
     private static final String CHARACTERS = "<>#&&@{};*đĐ[]łŁ$ß¤×÷€?:_+!%/=()§-,.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

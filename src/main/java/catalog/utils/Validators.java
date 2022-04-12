@@ -39,9 +39,19 @@ public class Validators {
                 "A-Z]{2,7}$";
 
         Pattern pat = Pattern.compile(emailRegex);
-        if (email == null)
+        if (email == null) {
             return false;
+        }
         return pat.matcher(email).matches();
+    }
+
+    public static boolean isValidPassword(String password) {
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=().])(?=\\S+$).{8,20}$";
+        Pattern pat = Pattern.compile(passwordRegex);
+        if (password == null) {
+            return false;
+        }
+        return pat.matcher(password).matches();
     }
 
     public static boolean isValidAudio
