@@ -1,4 +1,4 @@
-package catalog;
+package catalog.classes;
 
 import catalog.classes.Book;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ class BookTest {
     Book book;
 
     @Test
-    public void createBookWithValidValuesTest() {
+    void createBookWithValidValuesTest() {
         book = new Book("Az", List.of("Stephen King"), 1982, 13);
 
         assertEquals("Az", book.getTitle());
@@ -24,7 +24,7 @@ class BookTest {
     }
 
     @Test
-    public void createBookWithInvalidValuesTest() {
+    void createBookWithInvalidValuesTest() {
 
         IllegalArgumentException expected = assertThrows(IllegalArgumentException.class, () ->
                 new Book("", List.of("Stephen King"), 1982, 13));

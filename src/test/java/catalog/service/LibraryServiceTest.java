@@ -1,4 +1,4 @@
-package catalog;
+package catalog.service;
 
 import catalog.classes.Audio;
 import catalog.classes.Book;
@@ -89,7 +89,7 @@ class LibraryServiceTest {
     }
 
     @Test
-    public void addNullItemTest() {
+    void addNullItemTest() {
         IllegalStateException exception = assertThrows(IllegalStateException.class,
                 () -> libraryService.addLibraryItem(null));
 
@@ -114,6 +114,12 @@ class LibraryServiceTest {
         assertEquals("Illegális bál", libraryService.getLibraryItemById(id).get().getTitle());
         assertEquals(1997, libraryService.getLibraryItemById(id).get().getYearOfPublication());
         assertEquals(4, libraryService.getLibraryItemById(id).get().getQuantity());
+    }
+
+    @Test
+    void getLibraryItemIdByTitle() {
+
+        assertEquals(2, libraryService.getLibraryItemIdByTitle("Illegális bál"));
     }
 
     @Test
@@ -161,8 +167,8 @@ class LibraryServiceTest {
 
     @Test
     void hasAvailableLibraryItemQuantitybyIdTest() {
-        assertTrue(libraryService.hasAvailableLibraryItemQuantitybyId(4));
+        assertTrue(libraryService.hasAvailableLibraryItemQuantityById(4));
         libraryService.borrowLibraryItemByTitle("Viperagarzon");
-        assertFalse(libraryService.hasAvailableLibraryItemQuantitybyId(4));
+        assertFalse(libraryService.hasAvailableLibraryItemQuantityById(4));
     }
 }

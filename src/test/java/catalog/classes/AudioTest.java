@@ -1,6 +1,5 @@
-package catalog;
+package catalog.classes;
 
-import catalog.classes.Audio;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -13,7 +12,7 @@ class AudioTest {
     Audio audio;
 
     @Test
-    public void createAudioWithValidValuesTest() {
+    void createAudioWithValidValuesTest() {
         audio = new Audio("Ez a város", List.of("Aurora"), List.of("Vigi"), 1990, 3);
 
         assertEquals("Ez a város", audio.getTitle());
@@ -24,7 +23,7 @@ class AudioTest {
     }
 
     @Test
-    public void createAudioWithInvalidValuesTest() {
+    void createAudioWithInvalidValuesTest() {
 
         IllegalArgumentException expected = assertThrows(IllegalArgumentException.class, () ->
                 new Audio("", List.of("Aurora"), List.of("Vigi"), 1990, 3));

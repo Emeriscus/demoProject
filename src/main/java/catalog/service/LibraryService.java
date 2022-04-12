@@ -138,7 +138,7 @@ public class LibraryService {
         return libraryItemRepository.getLibraryItemTypeById(libraryItemId).equals(Book.class.toString());
     }
 
-    public boolean hasAvailableLibraryItemQuantitybyId(long libraryItemId) {
-        return libraryItemRepository.hasAvailableLibraryItemQuantitybyId(libraryItemId);
+    public boolean hasAvailableLibraryItemQuantityById(long libraryItemId) {
+        return libraryItemRepository.hasAvailableLibraryItemQuantityById(libraryItemId);
     }
 }

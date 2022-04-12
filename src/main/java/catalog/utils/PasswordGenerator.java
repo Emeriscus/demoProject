@@ -15,8 +15,9 @@ public class PasswordGenerator {
     private static final int ITERATIONS = 65536;
     private static final int KEY_LENGTH = 256;
     private static final int SALT_LENGTH = 30;
+    private static final String hashMethod = "PBKDF2WithHmacSHA1";
 
-    public static String getSalt() {
+    public static String generateSalt() {
         StringBuilder salt = new StringBuilder(SALT_LENGTH);
         for (int i = 0; i < SALT_LENGTH; i++) {
             salt.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
@@ -24,10 +25,10 @@ public class PasswordGenerator {
         return new String(salt);
     }
 
-    public static byte[] hash(char[] password, byte[] salt) {
+    private static byte[] generateHash(char[] password, byte[] salt) {
         PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
         try {
-            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            SecretKeyFactory skf = SecretKeyFactory.getInstance(hashMethod);
             return skf.generateSecret(spec).getEncoded();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new AssertionError("Error while hashing a password!", e);
@@ -37,7 +38,7 @@ public class PasswordGenerator {
     }
 
     public static String generateSecurePassword(String password, String salt) {
-        byte[] securePassword = hash(password.toCharArray(), salt.getBytes());
+        byte[] securePassword = generateHash(password.toCharArray(), salt.getBytes());
         return Base64.getEncoder().encodeToString(securePassword);
     }
 

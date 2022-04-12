@@ -48,7 +48,7 @@ public class UserMainMenu {
 
     public void printMenu() {
         System.out.println();
-        System.out.println("--------------Welcome to the Library Catalog Project Menu--------------");
+        System.out.println("--------------Welcome to the Library Catalog Project User Menu--------------");
         System.out.println();
         System.out.println("1. Find library item by title");
         System.out.println("2. Find library item by ID");

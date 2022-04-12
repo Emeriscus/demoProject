@@ -84,13 +84,11 @@ public class MenuItems {
         if (Validators.isNumber(input) && libraryService.getLibraryItemById(Integer.parseInt(input)).isPresent()) {
             libraryService.deleteLibraryItemById(Integer.parseInt(input));
             System.out.println("The delete was successful");
-            System.out.println("Continue with Enter");
-            scanner.nextLine();
         } else {
             System.out.println();
-            System.out.println("Continue with Enter");
-            scanner.nextLine();
         }
+        System.out.println("Continue with Enter");
+        scanner.nextLine();
     }
 
     public void runMenuItemSix() {
@@ -101,7 +99,7 @@ public class MenuItems {
     }
 
     public void runMenuItemSeven() {
-        System.out.print("Please type the title: ");
+        System.out.print("Please type the title fragment: ");
         System.out.println();
         System.out.println(libraryService.getAllLibraryItemByTitleFragment(scanner.nextLine()));
         System.out.println("Continue with Enter");
@@ -112,17 +110,15 @@ public class MenuItems {
         System.out.println("Please type the title: ");
         String input = scanner.nextLine();
         if (libraryService.getLibraryItemByTitle(input).isPresent() &&
-                libraryService.hasAvailableLibraryItemQuantitybyId(libraryService.getLibraryItemIdByTitle(input))) {
+                libraryService.hasAvailableLibraryItemQuantityById(libraryService.getLibraryItemIdByTitle(input))) {
             libraryService.borrowLibraryItemByTitle(input);
             System.out.println();
             System.out.println("The borrow was successful");
-            System.out.println("Continue with Enter");
-            scanner.nextLine();
         } else {
             System.out.println(("There is not available item!"));
-            System.out.println("Continue with Enter");
-            scanner.nextLine();
         }
+        System.out.println("Continue with Enter");
+        scanner.nextLine();
     }
 
     private void addLibraryItem(String itemType) {

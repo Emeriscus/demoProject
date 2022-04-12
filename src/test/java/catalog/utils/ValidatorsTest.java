@@ -1,4 +1,4 @@
-package catalog;
+package catalog.utils;
 
 import org.junit.jupiter.api.Test;
 
@@ -9,10 +9,10 @@ import static catalog.utils.Validators.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class ValidatorsTest {
+class ValidatorsTest {
 
     @Test
-    public void isBlankTest() {
+    void isBlankTest() {
         assertTrue(isBlank(null));
         assertTrue(isBlank(""));
         assertTrue(isBlank("    "));
@@ -21,7 +21,7 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void isEmptyTest() {
+    void isEmptyTest() {
         assertTrue(isEmpty(null));
         assertTrue(isEmpty(List.of()));
         assertFalse(isEmpty(List.of("")));
@@ -30,7 +30,7 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void isNumberTest() {
+    void isNumberTest() {
 
         assertTrue(isNumber("0"));
         assertTrue(isNumber("34"));
@@ -39,7 +39,7 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void isValidYearTest() {
+    void isValidYearTest() {
         assertTrue(isValidYear(1000));
         assertTrue(isValidYear(LocalDate.now().getYear()));
         assertFalse(isValidYear(999));
@@ -47,21 +47,21 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void isValidQuantityTest() {
+    void isValidQuantityTest() {
         assertTrue(isValidQuantity(1000));
         assertTrue(isValidQuantity(0));
         assertFalse(isValidQuantity(-1));
     }
 
     @Test
-    public void isValidEmailTestWithValidEmailTest() {
+    void isValidEmailTestWithValidEmailTest() {
         assertTrue(isValidEmail("emeriscus@domain.co.in"));
         assertTrue(isValidEmail("emeriscus@domain.com"));
         assertTrue(isValidEmail("emeriscus.name@domain.com"));
     }
 
     @Test
-    public void isValidEmailTestWithInvalidEmailTest() {
+    void isValidEmailTestWithInvalidEmailTest() {
         assertFalse(isValidEmail(".emeriscus@google.com"));
         assertFalse(isValidEmail("emeriscus@google.com."));
         assertFalse(isValidEmail("emeriscus@google..com"));

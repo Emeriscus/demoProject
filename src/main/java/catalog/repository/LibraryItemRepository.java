@@ -62,7 +62,7 @@ public class LibraryItemRepository {
                 ("update library_items set available_quantity = available_quantity-1 where id = ?", libraryItemId);
     }
 
-    public boolean hasAvailableLibraryItemQuantitybyId(long libraryItemId) {
+    public boolean hasAvailableLibraryItemQuantityById(long libraryItemId) {
         //language=sql
         return jdbcTemplate.queryForObject("select * from library_items where id=?",
                 (rs, rowNum) -> rs.getInt("available_quantity"), libraryItemId) > 0;

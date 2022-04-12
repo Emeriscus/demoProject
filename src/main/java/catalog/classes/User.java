@@ -1,7 +1,5 @@
 package catalog.classes;
 
-import catalog.utils.Validators;
-
 public class User {
 
     private String email;
@@ -13,10 +11,6 @@ public class User {
         this.email = email;
         this.salt = salt;
         this.securePassword = securePassword;
-    }
-
-    public User(String email) {
-        this.email = email;
     }
 
     public String getEmail() {

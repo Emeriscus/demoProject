@@ -6,10 +6,6 @@ public class Admin extends User {
         super(email, salt, securePassword);
     }
 
-    public Admin(String email) {
-        super(email);
-    }
-
     @Override
     public boolean isAdminRights() {
         return true;

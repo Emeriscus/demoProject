@@ -41,7 +41,7 @@ public class LoginMenu {
 
     public void printUserMenu() {
         System.out.println();
-        System.out.println("----------------Welcome to the Library Catalog Projekt----------------");
+        System.out.println("----------------Welcome to the Library Catalog Project----------------");
         System.out.println();
         System.out.println("Please login or register!");
         System.out.println();
@@ -63,7 +63,7 @@ public class LoginMenu {
         System.out.println("Please type the email and press Enter");
         String email = scanner.nextLine();
         if (userService.isExistingUser(email) && isCorrectPassword(email)) {
-            if (userService.HasAdminRightByEmail(email)) {
+            if (userService.hasAdminRightByEmail(email)) {
                 adminMainMenu.runMenu();
             } else {
                 userMainMenu.runMenu();
@@ -123,7 +123,7 @@ public class LoginMenu {
     }
 
     private void saveEmailAndPassword(String email, String password) {
-        String salt = PasswordGenerator.getSalt();
+        String salt = PasswordGenerator.generateSalt();
         String securePassword = PasswordGenerator.generateSecurePassword(password, salt);
         userService.addUser(new User(email, salt, securePassword));
         System.out.println("The registration was successful! Please press Enter!");
