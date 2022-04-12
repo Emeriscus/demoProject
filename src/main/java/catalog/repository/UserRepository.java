@@ -31,6 +31,12 @@ public class UserRepository {
                 (rs, rowNum) -> rs.getString("salt"), email);
     }
 
+    public boolean HasAdminRightByEmail(String email) {
+        //language=sql
+        return jdbcTemplate.queryForObject("select * from users where email=?",
+                (rs, rowNum) -> rs.getBoolean("admin_rights"), email);
+    }
+
     public void queryByEmail(String email) {
         //language=sql
         jdbcTemplate.queryForObject("select * from users where users.email = ?",

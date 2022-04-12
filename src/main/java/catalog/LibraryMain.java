@@ -4,8 +4,8 @@ import catalog.classes.Admin;
 import catalog.classes.Audio;
 import catalog.classes.Book;
 import catalog.classes.User;
-import catalog.controller.Menu;
-import catalog.controller.UserMenu;
+import catalog.controller.AdminMainMenu;
+import catalog.controller.LoginMenu;
 import catalog.repository.UserRepository;
 import catalog.service.LibraryService;
 import catalog.repository.AudioRepository;
@@ -65,9 +65,9 @@ public class LibraryMain {
         userService.addUser(new Admin("emeriscus@gmail.com", "wP.X-L[[c&D<×I/2-Đ?VCnTZ(P,{kg", "LrSGYAfmDGBQsAZkwD3BXz1TEalUeU2155ODJt3YJ4A="));
         userService.addUser(new User("rsgf@sdg.com", "sdgsfgvsdgsdgsdgrghzmhwe4t242", "32534t4wt5fdg8v94zt9tw4"));
 
-        UserMenu userMenu = new UserMenu(userService, libraryService);
-        Menu menu = new Menu(libraryService);
+        LoginMenu loginMenu = new LoginMenu(userService, libraryService);
+        AdminMainMenu adminMainMenu = new AdminMainMenu(libraryService);
 
-        userMenu.runUserMenu();
+        loginMenu.runUserMenu();
     }
 }

@@ -1,6 +1,6 @@
 package catalog.controller;
 
-import catalog.classes.Admin;
+import catalog.classes.User;
 import catalog.service.LibraryService;
 import catalog.service.UserService;
 import catalog.utils.PasswordGenerator;
@@ -8,16 +8,18 @@ import catalog.utils.Validators;
 
 import java.util.Scanner;
 
-public class UserMenu {
+public class LoginMenu {
 
-    private Menu menu;
+    private AdminMainMenu adminMainMenu;
+    private UserMainMenu userMainMenu;
     private Scanner scanner = new Scanner(System.in);
     private int choice = 0;
     private UserService userService;
 
-    public UserMenu(UserService userService, LibraryService libraryService) {
+    public LoginMenu(UserService userService, LibraryService libraryService) {
         this.userService = userService;
-        this.menu = new Menu(libraryService);
+        this.adminMainMenu = new AdminMainMenu(libraryService);
+        this.userMainMenu = new UserMainMenu(libraryService);
     }
 
     public void runUserMenu() {
@@ -61,7 +63,11 @@ public class UserMenu {
         System.out.println("Please type the email and press Enter");
         String email = scanner.nextLine();
         if (userService.isExistingUser(email) && isCorrectPassword(email)) {
-            menu.runMenu();
+            if (userService.HasAdminRightByEmail(email)) {
+                adminMainMenu.runMenu();
+            } else {
+                userMainMenu.runMenu();
+            }
             return;
         }
         choice = 0;
@@ -119,8 +125,8 @@ public class UserMenu {
     private void saveEmailAndPassword(String email, String password) {
         String salt = PasswordGenerator.getSalt();
         String securePassword = PasswordGenerator.generateSecurePassword(password, salt);
-        userService.addUser(new Admin(email, salt, securePassword));
-        System.out.println("The registration was successfull! Please press Enter!");
+        userService.addUser(new User(email, salt, securePassword));
+        System.out.println("The registration was successful! Please press Enter!");
         scanner.nextLine();
     }
 }

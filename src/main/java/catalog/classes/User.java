@@ -7,13 +7,12 @@ public class User {
     private String email;
     private String salt;
     private String securePassword;
-    private boolean adminRights;
+    private boolean adminRights = false;
 
     public User(String email, String salt, String securePassword) {
         this.email = email;
         this.salt = salt;
         this.securePassword = securePassword;
-        this.adminRights = false;
     }
 
     public User(String email) {

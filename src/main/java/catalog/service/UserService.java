@@ -24,6 +24,10 @@ public class UserService {
         return userRepository.getStoredSaltByEmail(email);
     }
 
+    public boolean HasAdminRightByEmail(String email) {
+        return userRepository.HasAdminRightByEmail(email);
+    }
+
     public boolean isEmailTaken(String email) {
         try {
             userRepository.queryByEmail(email);
