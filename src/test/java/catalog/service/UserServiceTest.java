@@ -7,6 +7,7 @@ import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mariadb.jdbc.MariaDbDataSource;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
 
@@ -51,13 +52,12 @@ class UserServiceTest {
     }
 
     @Test
-    void isEmailTakenTest() {
-
-
+    void isExistingUserWithExistUserTest() {
+        assertTrue(userService.isExistingUser("emeriscus@gmail.com"));
     }
 
     @Test
-    void isExistingUserTest() {
-
+    void isExistingUserWithNotExistUserTest() {
+        assertFalse(userService.isExistingUser("dsfdadfef@aef.hu"));
     }
 }

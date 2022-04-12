@@ -28,16 +28,6 @@ public class UserService {
         return userRepository.hasAdminRightByEmail(email);
     }
 
-    public boolean isEmailTaken(String email) {
-        try {
-            userRepository.queryByEmail(email);
-            System.out.println("The email address already taken: " + email + "!");
-            return true;
-        } catch (EmptyResultDataAccessException erdae) {
-            return false;
-        }
-    }
-
     public boolean isExistingUser(String email) {
         try {
             userRepository.queryByEmail(email);

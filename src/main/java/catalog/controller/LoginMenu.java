@@ -103,7 +103,8 @@ public class LoginMenu {
     }
 
     private void checkEmailAndPassword(String email) {
-        if (userService.isEmailTaken(email)) {
+        if (userService.isExistingUser(email)) {
+            System.out.println("The email address already taken: " + email + "!");
             System.out.println("Press Enter and choose another e-mail!");
             scanner.nextLine();
         } else {
