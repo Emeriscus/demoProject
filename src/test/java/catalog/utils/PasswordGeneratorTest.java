@@ -19,5 +19,9 @@ class PasswordGeneratorTest {
 
         assertEquals(newSecurePassword, storedSecurePassword);
         assertTrue(verifyUserPassword(providedPassword, storedSecurePassword, salt));
+
+        String test = "Qawsedrf.99";
+        String testsecurepassword = generateSecurePassword(test, "=lU)Hoh$]6oB8MßoLFCtV*o[X,÷B%§");
+        System.out.println(testsecurepassword);
     }
 }

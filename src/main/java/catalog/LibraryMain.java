@@ -62,8 +62,10 @@ public class LibraryMain {
 
         UserService userService = new UserService(new UserRepository(dataSource));
 
-        userService.addUser(new Admin("emeriscus@gmail.com", "wP.X-L[[c&D<×I/2-Đ?VCnTZ(P,{kg", "LrSGYAfmDGBQsAZkwD3BXz1TEalUeU2155ODJt3YJ4A="));
-        userService.addUser(new User("rsgf@sdg.com", "sdgsfgvsdgsdgsdgrghzmhwe4t242", "32534t4wt5fdg8v94zt9tw4"));
+        userService.addUser(new Admin("adminuser@gmail.com", "€idCy2L.OT*4HLĐ_I%Y-C*w7×_2o&5",
+                "l8y/iyK+5U1BEFx+WZlqoKnBFYdsGd13YErcROX4e6mc8j83bGVfOn+iNJyZidxIdFOKPlRcZh5zMgjf9t77DA=="));
+        userService.addUser(new User("standarduses@gmail.com", "xAw;§Bm)ynNg×kjWevłv,U)En/XjS}",
+                "0OX8bHzowdcijUk4G5B5NnG0IBenzDXv+KBZdvMbZGwX+3ctG8oCKGoSjjeAtxKeJ+NCAl4tBJWCW4sLHFCFng=="));
 
         LoginMenu loginMenu = new LoginMenu(userService, libraryService);
         AdminMainMenu adminMainMenu = new AdminMainMenu(libraryService);
